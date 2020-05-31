@@ -1,0 +1,12 @@
+[
+  {
+    "targets": [
+      "promdiscovery_traefik_1:9090"
+    ]
+  },
+  {
+    "targets": [
+      "promdiscovery_traefik_2:9090"
+    ]
+  }
+]
