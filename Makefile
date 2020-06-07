@@ -7,10 +7,10 @@ APP ?= promdiscovery
 IMG ?= sgoroshko/$(APP)
 VSN ?= $(shell cat VERSION)
 
-MAIN_GO := main.go
-LDFLAGS := "-s -w -X main.VSN=$(VSN)"
-PKGS    := $(shell go list ./...)
-TARGET  := " ----> [$@]"
+MAIN_GO = main.go
+LDFLAGS = "-s -w -X main.VSN=$(VSN)"
+PKGS    = $(shell go list ./...)
+TARGET  = " ----> [$@]"
 
 .PHONY: all
 all: help
