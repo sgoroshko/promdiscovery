@@ -16,7 +16,7 @@ var VSN = ""
 
 func main() {
 	app := cli.NewApp()
-	app.Usage = ""
+	app.Usage = "prometheus targets scrapper"
 	app.Version = VSN
 	app.Commands = []*cli.Command{
 		promdiscovery.NewCommandCompose(),

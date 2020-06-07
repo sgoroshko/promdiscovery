@@ -21,7 +21,7 @@ func NewCommandCompose() *cli.Command {
 	cfg := new(configCompose)
 	return &cli.Command{
 		Name:   "compose",
-		Usage:  "",
+		Usage:  "for docker-compose",
 		Flags:  bindConfigCompose(cfg),
 		Action: actionCompose(cfg),
 	}

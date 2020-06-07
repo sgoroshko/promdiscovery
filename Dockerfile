@@ -9,7 +9,7 @@ COPY go.sum .
 RUN go mod download
 
 COPY $PWD .
-RUN make build
+RUN APP=promdiscovery make build
 
 FROM alpine
 COPY --from=build-img /build/promdiscovery /promdiscovery
