@@ -8,5 +8,10 @@
     "targets": [
       "promdiscovery_traefik_2:9090"
     ]
+  },
+  {
+    "targets": [
+      "promdiscovery_traefik_3:9090"
+    ]
   }
 ]

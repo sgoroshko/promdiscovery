@@ -2,7 +2,7 @@ version: '3'
 
 services:
   prometheus:
-    image: prom/prometheus:v2.15.2
+    image: prom/prometheus:v2.18.2
     restart: unless-stopped
     expose:
       - 9090
@@ -11,8 +11,8 @@ services:
     command:
       - '--config.file=/prometheus.yml'
     volumes:
-      - '$PWD/prometheus.yml:/prometheus.yml'
-      - '$PWD/discovered.json:/discovered.json'
+      - '$PWD/dockerdata/prometheus.yml:/prometheus.yml'
+      - '$PWD/dockerdata/discovered.json:/discovered.json:ro'
 
   promediscovery:
     image: sgoroshko/promdiscovery
@@ -22,10 +22,9 @@ services:
       - '--debug'
       - '--output=/discovered.json'
       - '--key=metrics'
-#      - '--network=monitoring'
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
-      - '$PWD/discovered.json:/discovered.json'
+      - '$PWD/dockerdata/discovered.json:/discovered.json'
 
   traefik:
     image: traefik:v2.2

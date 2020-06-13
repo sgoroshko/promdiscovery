@@ -2,5 +2,4 @@
 .git/
 
 promdiscovery
-discovered.json
-docker-compose.yml
+dockerdata/

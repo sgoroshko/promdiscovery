@@ -11,13 +11,13 @@ import (
 	promdiscovery "github.com/sgoroshko/promdiscovery/cmd"
 )
 
-// VSN represent app version, set by LDFLAGS
-var VSN = ""
+// VERSION represent app version, set by LDFLAGS
+var VERSION = ""
 
 func main() {
 	app := cli.NewApp()
 	app.Usage = "prometheus targets scrapper"
-	app.Version = VSN
+	app.Version = VERSION
 	app.Commands = []*cli.Command{
 		promdiscovery.NewCommandCompose(),
 	}

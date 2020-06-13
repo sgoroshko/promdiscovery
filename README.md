@@ -19,20 +19,42 @@ services:
     restart: unless-stopped
     expose:
       - 9090
+    ports:
+      - '9090:9090'
     command:
       - '--config.file=/prometheus.yml'
     volumes:
       - '$PWD/dockerdata/prometheus.yml:/prometheus.yml'
       - '$PWD/dockerdata/discovered.json:/discovered.json'
 
-  promdiscovery:
-    image: sgoroshko/prometheus-discovery
+  promediscovery:
+    image: sgoroshko/promdiscovery
     restart: unless-stopped
     command:
+      - 'compose'
+      - '--debug'
       - '--output=/discovered.json'
       - '--key=metrics'
+#      - '--network=monitoring'
     volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
       - '$PWD/dockerdata/discovered.json:/discovered.json'
+
+  traefik:
+    image: traefik:v2.2
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits: { cpus: '1.00', memory: '50M' }
+    expose:
+      - 80
+      - 9090
+    command:
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.metrics.address=:9090'
+      - '--metrics.prometheus.entryPoint=metrics'
+    labels:
+      - 'metrics=:9090/metrics'
 ```
 
 Deploy new container:
@@ -53,7 +75,7 @@ discovered.json will be:
 
 ```
 NAME:
-   promdiscovery - scrape prometheus targets for docker-compose
+   promdiscovery - prometheus targets scrapper
 
 USAGE:
    promdiscovery [global options] command [command options] [arguments...]
@@ -62,6 +84,7 @@ VERSION:
    0.0.1
 
 COMMANDS:
+   compose  for docker-compose
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:

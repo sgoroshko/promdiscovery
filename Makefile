@@ -8,9 +8,10 @@ IMG ?= sgoroshko/$(APP)
 VSN ?= $(shell cat VERSION)
 
 MAIN_GO = main.go
-LDFLAGS = "-s -w -X main.VSN=$(VSN)"
+LDFLAGS = "-s -w -X main.VERSION=$(VSN)"
 PKGS    = $(shell go list ./...)
 TARGET  = " ----> [$@]"
+
 
 .PHONY: all
 all: help
@@ -69,12 +70,20 @@ image:
 	@echo $(TARGET)
 	$(DOCKER) build . --tag $(IMG):latest --tag $(IMG):$(VSN)
 
-## docker-up:
+## docker-up: rebuild and restart docker-compose, dev mode
+.PHONY: docker-up
 docker-up:
 	@echo $(TARGET)
-	$(DC) up -d $(ARGS)
+	$(DC) --file=docker-compose.yaml up --build -d $(ARGS)
 
 ## docker-stop:
+.PHONY: docker-stop
 docker-stop:
 	@echo $(TARGET)
-	$(DC) stop
+	$(DC) --file=docker-compose.yaml stop
+
+## docker-prune: docker rmi -f all <none> images
+.PHONY: docker-prune
+docker-prune:
+	@echo $(TARGET)
+	$(DOCKER) images | grep '^<none>' | awk '{printf $$3" "}' | xargs $(DOCKER) rm -f
