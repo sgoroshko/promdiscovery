@@ -34,10 +34,12 @@ services:
         limits: { cpus: '1.00', memory: '50M' }
     expose:
       - 80
-      - 9090
+      - 443
+      - 8080
     command:
       - '--entrypoints.web.address=:80'
-      - '--entrypoints.metrics.address=:9090'
-      - '--metrics.prometheus.entryPoint=metrics'
+      - '--entrypoints.websecure.address=:443'
+      - '--entrypoints.metrics.address=:8080'
+      - '--metrics.prometheus=true'
     labels:
-      - 'metrics=9090'
+      - 'metrics=:8080/metrics'

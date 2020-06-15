@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"sort"
+	"strings"
 	"syscall"
 	"time"
 
@@ -153,7 +153,11 @@ func scrapeTargetsCompose(ctx context.Context, cfg *configCompose, dockerClient 
 
 		for k, v := range c.Labels {
 			if k == cfg.key {
-				pt.Targets = append(pt.Targets, fmt.Sprintf("%s:%s", c.Names[0][1:], v))
+				if strings.HasSuffix(v, "/metrics") {
+					v = v[:len(v)-8]
+				}
+
+				pt.Targets = append(pt.Targets, c.Names[0][1:]+v)
 			}
 		}
 
