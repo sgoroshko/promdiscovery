@@ -15,7 +15,7 @@ version: '3'
 
 services:
   prometheus:
-    image: prom/prometheus:v2.15.2
+    image: prom/prometheus:v2.18.2
     restart: unless-stopped
     expose:
       - 9090
@@ -25,9 +25,9 @@ services:
       - '--config.file=/prometheus.yml'
     volumes:
       - '$PWD/dockerdata/prometheus.yml:/prometheus.yml'
-      - '$PWD/dockerdata/discovered.json:/discovered.json'
+      - '$PWD/dockerdata/discovered.json:/discovered.json:ro'
 
-  promediscovery:
+  promdiscovery:
     image: sgoroshko/promdiscovery
     restart: unless-stopped
     command:
@@ -35,7 +35,6 @@ services:
       - '--debug'
       - '--output=/discovered.json'
       - '--key=metrics'
-#      - '--network=monitoring'
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
       - '$PWD/dockerdata/discovered.json:/discovered.json'
@@ -48,13 +47,15 @@ services:
         limits: { cpus: '1.00', memory: '50M' }
     expose:
       - 80
-      - 9090
+      - 443
+      - 8080
     command:
       - '--entrypoints.web.address=:80'
-      - '--entrypoints.metrics.address=:9090'
-      - '--metrics.prometheus.entryPoint=metrics'
+      - '--entrypoints.websecure.address=:443'
+      - '--entrypoints.metrics.address=:8080'
+      - '--metrics.prometheus=true'
     labels:
-      - 'metrics=:9090/metrics'
+      - 'metrics=:8080/metrics'
 ```
 
 Deploy new container:

@@ -14,7 +14,7 @@ services:
       - '$PWD/dockerdata/prometheus.yml:/prometheus.yml'
       - '$PWD/dockerdata/discovered.json:/discovered.json:ro'
 
-  promediscovery:
+  promdiscovery:
     image: sgoroshko/promdiscovery
     restart: unless-stopped
     command:
