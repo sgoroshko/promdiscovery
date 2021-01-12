@@ -14,4 +14,5 @@ RUN APP=promdiscovery make build
 FROM alpine
 COPY --from=build-img /build/promdiscovery /promdiscovery
 
-ENTRYPOINT [ "/promdiscovery" ]
+WORKDIR /
+CMD [ "/promdiscovery" ]
