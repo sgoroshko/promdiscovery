@@ -15,4 +15,4 @@ FROM alpine
 COPY --from=build-img /build/promdiscovery /promdiscovery
 
 WORKDIR /
-CMD [ "/promdiscovery" ]
+ENTRYPOINT [ "/promdiscovery" ]
